@@ -1,23 +1,33 @@
-// 1. Import our packages
+// 1. Import Packages
 const express = require('express');
+const mongoose = require('mongoose');
+const dotenv = require('dotenv');
 
-// 2. Initialize the app
+// 2. Configure Environment Variables
+// This line loads the MONGO_URI from our .env file
+dotenv.config();
+
+// 3. Initialize the App
 const app = express();
 
-// 3. Define a "port"
-// We'll use 5000 for the backend
-const PORT = 5000;
+// 4. Define a "port"
+const PORT = process.env.PORT || 5000;
 
-// 4. Create a "test route"
-// This is an endpoint for our server
+// 5. Connect to MongoDB
+mongoose.connect(process.env.MONGO_URI)
+  .then(() => {
+    console.log('Successfully connected to MongoDB!');
+  })
+  .catch((err) => {
+    console.error('Failed to connect to MongoDB:', err);
+  });
+
+// 6. Create a "test route"
 app.get('/', (req, res) => {
-  // req = request, res = response
   res.send('Hello from the NeighborNest server!');
 });
 
-// 5. Start the server
+// 7. Start the server
 app.listen(PORT, () => {
   console.log(`Server is running on http://localhost:${PORT}`);
-}); 
-
-
+});
