@@ -3,6 +3,7 @@ const express = require('express');
 const mongoose = require('mongoose');
 const dotenv = require('dotenv');
 const authRoutes = require('./routes/authRoutes');
+const itemRoutes = require('./routes/itemRoutes');
 
 // 2. Configure Environment Variables
 // This line loads the MONGO_URI from our .env file
@@ -30,6 +31,7 @@ app.get('/', (req, res) => {
 });
 
 app.use('/api/auth', authRoutes);
+app.use('/api/items', itemRoutes);
 
 // 7. Start the server
 app.listen(PORT, () => {
