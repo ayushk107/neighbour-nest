@@ -2,6 +2,7 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const dotenv = require('dotenv');
+const morgan = require('morgan');
 const authRoutes = require('./routes/authRoutes');
 const itemRoutes = require('./routes/itemRoutes');
 
@@ -12,6 +13,7 @@ dotenv.config();
 // 3. Initialize the App
 const app = express();
 app.use(express.json());
+app.use(morgan('dev'));
 
 // 4. Define a "port"
 const PORT = process.env.PORT || 5000;
