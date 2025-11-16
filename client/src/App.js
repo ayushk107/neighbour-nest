@@ -1,12 +1,54 @@
 // --- client/src/App.js ---
-import React from 'react';
-import './App.css'; // This imports our new styles
-import Register from './pages/Register'; // This imports our new page
+import React, { useContext } from 'react';
+import { Routes, Route, Link, Navigate } from 'react-router-dom';
+import './App.css';
+import { AuthContext } from './context/AuthContext'; // <-- IMPORT CONTEXT
+
+// Import our pages
+import Register from './pages/Register';
+import Login from './pages/Login';
+import Dashboard from './pages/Dashboard'; // <-- IMPORT DASHBOARD
+
+// Our Navbar is now "auth-aware"
+function Navbar() {
+  const { user, logout } = useContext(AuthContext); // <-- USE CONTEXT
+
+  return (
+    <nav style={{ background: '#333', padding: '1rem', textAlign: 'center' }}>
+      <h1 style={{ color: 'white', margin: 0, padding: 0, display: 'inline' }}>NeighborNest</h1>
+      {user ? (
+        // If user is logged in
+        <>
+          <span style={{ color: 'white', margin: '0 1rem' }}>Hi, {user.username}!</span>
+          <button onClick={logout} style={{ color: 'white', background: 'none', border: 'none', cursor: 'pointer', textDecoration: 'underline' }}>
+            Logout
+          </button>
+        </>
+      ) : (
+        // If user is logged out
+        <>
+          <Link to="/login" style={{ color: 'white', margin: '0 1rem', textDecoration: 'none' }}>Login</Link>
+          <Link to="/register" style={{ color: 'white', margin: '0 1rem', textDecoration: 'none' }}>Register</Link>
+        </>
+      )}
+    </nav>
+  );
+}
 
 function App() {
+  const { token } = useContext(AuthContext); // <-- Get token
+
   return (
     <div className="App">
-      <Register />
+      <Navbar />
+      <Routes>
+        {/* If user is logged in, main page (/) is Dashboard. Otherwise, it's Login. */}
+        <Route path="/" element={token ? <Dashboard /> : <Navigate to="/login" />} />
+        
+        {/* /login and /register only show if user is NOT logged in */}
+        <Route path="/login" element={!token ? <Login /> : <Navigate to="/" />} />
+        <Route path="/register" element={!token ? <Register /> : <Navigate to="/" />} />
+      </Routes>
     </div>
   );
 }

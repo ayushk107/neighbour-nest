@@ -1,8 +1,10 @@
+import { useNavigate } from 'react-router-dom';
 import React, { useState } from 'react';
 import axios from 'axios';
 
 function Register() {
   // 1. We use useState to hold the form data in an object
+  const navigate = useNavigate();
   const [formData, setFormData] = useState({
     username: '',
     email: '',
@@ -27,7 +29,8 @@ function Register() {
       const response = await axios.post('/api/auth/register', formData);
       
       console.log('User registered!', response.data);
-      alert('Registration successful! You can now log in.');
+     alert('Registration successful! Please log in.');
+  navigate('/login');
       // Later, we will redirect the user to the login page
       
     } catch (error) {
