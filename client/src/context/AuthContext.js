@@ -12,7 +12,7 @@ function AuthProvider({ children }) {
   // We check localStorage to see if the user is already logged in
   const [user, setUser] = useState(JSON.parse(localStorage.getItem('user')) || null);
   const [token, setToken] = useState(localStorage.getItem('token') || null);
-
+  const [loading, setLoading] = useState(true);
   // 4. Set axios default header
   // This useEffect runs when the 'token' changes.
   // It sets a global header for all future axios requests.
@@ -27,6 +27,7 @@ function AuthProvider({ children }) {
       localStorage.removeItem('token');
       localStorage.removeItem('user');
     }
+    setLoading(false);
   }, [token, user]);
 
   // 5. Login Function
@@ -55,6 +56,7 @@ function AuthProvider({ children }) {
   const contextValue = {
     user,
     token,
+    loading,
     login,
     logout
   };
