@@ -5,11 +5,12 @@ import { Routes, Route, Link, Navigate } from 'react-router-dom';
 import './App.css';
 import { AuthContext } from './context/AuthContext'; // <-- IMPORT CONTEXT
 
+
 // Import our pages
 import Register from './pages/Register';
 import Login from './pages/Login';
 import Dashboard from './pages/Dashboard'; // <-- IMPORT DASHBOARD
-
+import Requests from './pages/Requests';
 // Our Navbar is now "auth-aware"
 function Navbar() {
   const { user, logout } = useContext(AuthContext); // <-- USE CONTEXT
@@ -21,6 +22,9 @@ function Navbar() {
         // If user is logged in
         <>
           <span style={{ color: 'white', margin: '0 1rem' }}>Hi, {user.username}!</span>
+          <Link to="/requests" style={{ color: 'white', margin: '0 1rem', textDecoration: 'none', fontWeight: 'bold' }}>
+             My Requests
+          </Link>
           <button onClick={logout} style={{ color: 'white', background: 'none', border: 'none', cursor: 'pointer', textDecoration: 'underline' }}>
             Logout
           </button>
@@ -52,7 +56,7 @@ function App() {
       <Routes>
         {/* If user is logged in, main page (/) is Dashboard. Otherwise, it's Login. */}
         <Route path="/" element={token ? <Dashboard /> : <Navigate to="/login" />} />
-        
+        <Route path="/requests" element={token ? <Requests /> : <Navigate to="/login" />} />
         {/* /login and /register only show if user is NOT logged in */}
         <Route path="/login" element={!token ? <Login /> : <Navigate to="/" />} />
         <Route path="/register" element={!token ? <Register /> : <Navigate to="/" />} />

@@ -5,6 +5,7 @@ const dotenv = require('dotenv');
 const morgan = require('morgan');
 const authRoutes = require('./routes/authRoutes');
 const itemRoutes = require('./routes/itemRoutes');
+const requestRoutes = require('./routes/requestRoutes');
 
 // 2. Configure Environment Variables
 // This line loads the MONGO_URI from our .env file
@@ -34,7 +35,7 @@ app.get('/', (req, res) => {
 
 app.use('/api/auth', authRoutes);
 app.use('/api/items', itemRoutes);
-
+app.use('/api/requests', requestRoutes);
 // 7. Start the server
 app.listen(PORT, () => {
   console.log(`Server is running on http://localhost:${PORT}`);
