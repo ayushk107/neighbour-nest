@@ -2,8 +2,9 @@
 import React from 'react';
 
 // A simple component to display an item
-function ItemCard({ item }) {
+function ItemCard({ item, currentUser, onDelete}) {
   // Simple styling for the card
+ 
   const cardStyle = {
     background: '#fff',
     border: '1px solid #ddd',
@@ -33,7 +34,7 @@ function ItemCard({ item }) {
     borderRadius: '12px',
     fontSize: '0.75rem',
   };
-
+ const isOwner = currentUser && item.owner._id === currentUser.id;
   return (
     <div style={cardStyle}>
       <div style={headerStyle}>
@@ -51,6 +52,22 @@ function ItemCard({ item }) {
       }}>
         {item.isAvailable ? 'Request to Borrow' : 'Unavailable'}
       </button>
+      {isOwner && (
+        <button 
+          onClick={() => onDelete(item._id)} 
+          style={{
+            backgroundColor: '#dc3545', // Red color
+            color: 'white',
+            border: 'none',
+            padding: '0.5rem 1rem',
+            borderRadius: '4px',
+            marginLeft: '0.5rem',
+            cursor: 'pointer'
+          }}
+        >
+          Delete
+        </button>
+      )}
     </div>
   );
 }

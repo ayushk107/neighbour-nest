@@ -1,6 +1,8 @@
 // --- client/src/components/ItemForm.js ---
+
 import React, { useState } from 'react';
 import axios from 'axios';
+import toast from 'react-hot-toast'; // <-- All imports at the TOP
 
 // We receive a function 'onItemCreated' from the Dashboard
 function ItemForm({ onItemCreated }) {
@@ -20,7 +22,7 @@ function ItemForm({ onItemCreated }) {
       // Our AuthContext already set the token header!
       const response = await axios.post('/api/items', formData);
       
-      alert('Item created!');
+      toast.success('Item created!'); // <-- Replaced alert
       onItemCreated(response.data.item); // Send the new item up to the Dashboard
       
       // Clear the form
@@ -28,7 +30,8 @@ function ItemForm({ onItemCreated }) {
       
     } catch (error) {
       console.error('Error creating item:', error.response.data);
-      alert(`Error: ${error.response.data.message}`);
+      // Use BACKTICKS (`) for the error message
+      toast.error(`Error: ${error.response.data.message}`);
     }
   };
 
@@ -62,4 +65,4 @@ function ItemForm({ onItemCreated }) {
   );
 }
 
-export default ItemForm;
+export default ItemForm; // <-- ONLY ONE export default at the BOTTOM

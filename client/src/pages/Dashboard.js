@@ -1,5 +1,5 @@
 // --- client/src/pages/Dashboard.js ---
-
+import toast from 'react-hot-toast';
 import React, { useState, useEffect, useContext} from 'react';
 import axios from 'axios';
 import { AuthContext } from '../context/AuthContext';
@@ -10,9 +10,27 @@ function Dashboard() {
   const [items, setItems] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const { token } = useContext(AuthContext);
-
+  const { token,user } = useContext(AuthContext);
+  
   // This function will run once when the component loads
+  const handleDelete = async (itemId) => {
+    // Ask for confirmation
+    if (!window.confirm('Are you sure you want to delete this item?')) {
+      return;
+    }
+
+    try {
+      await axios.delete(`/api/items/${itemId}`);
+      // Remove the item from our state instantly
+      setItems(items.filter(item => item._id !== itemId));
+      toast.success('Item deleted!');
+      // toast.success('Item deleted!'); // We'll add this later
+    } catch (err) {
+      console.error('Error deleting item:', err);
+      toast.error('Failed to delete item.');
+      // toast.error('Failed to delete item.'); // We'll add this later
+    }
+  };
   useEffect(() => {
     const fetchItems = async () => {
       try {
@@ -54,7 +72,7 @@ function Dashboard() {
       return <p>No items found in your community yet. Be the first to add one!</p>;
     }
     return items.map(item => (
-      <ItemCard key={item._id} item={item} />
+      <ItemCard key={item._id} item={item} currentUser={user} onDelete={handleDelete} />
     ));
   };
   

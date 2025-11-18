@@ -2,7 +2,7 @@
 
 const express = require('express');
 const router = express.Router();
-const { createItem, getItems } = require('../controllers/itemController');
+const { createItem, getItems, deleteItem} = require('../controllers/itemController');
 const { protect } = require('../middleware/authMiddleware');
 
 // @route  POST /api/items/
@@ -14,5 +14,5 @@ router.post('/', protect, createItem);
 // @desc   Get all items in the user's community
 // @access Private (We 'protect' this route too)
 router.get('/', protect, getItems);
-
+router.delete('/:id', protect, deleteItem);
 module.exports = router;

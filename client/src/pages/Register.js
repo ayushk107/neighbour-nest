@@ -1,4 +1,5 @@
 import { useNavigate } from 'react-router-dom';
+import toast from 'react-hot-toast';
 import React, { useState } from 'react';
 import axios from 'axios';
 
@@ -29,13 +30,13 @@ function Register() {
       const response = await axios.post('/api/auth/register', formData);
       
       console.log('User registered!', response.data);
-     alert('Registration successful! Please log in.');
+     toast.success('Registration successful! Please log in.');
   navigate('/login');
       // Later, we will redirect the user to the login page
       
     } catch (error) {
       console.error('Registration error:', error.response.data);
-      alert(`Error: ${error.response.data.message}`);
+      toast.error(`Error: ${error.response.data.message}`);
     }
   };
 

@@ -1,4 +1,5 @@
 // --- client/src/pages/Login.js ---
+import toast from 'react-hot-toast';
 import React, { useState, useContext } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { AuthContext } from '../context/AuthContext'; // <-- IMPORT
@@ -23,12 +24,12 @@ function Login() {
       // Call the login function from context
       await login(formData); 
 
-      alert('Login successful!');
+     toast.success('Login successful!');
       navigate('/'); // <-- Redirect to home page
 
     } catch (error) {
       console.error('Login error:', error.response.data);
-      alert(`Error: ${error.response.data.message}`);
+     toast.error(`Error: ${error.response.data.message}`);
     }
   };
 

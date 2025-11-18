@@ -21,6 +21,10 @@ exports.createItem = async (req, res) => {
     });
 
     const savedItem = await newItem.save();
+
+    // ADD THIS ONE LINE to populate the owner before sending it
+    await savedItem.populate('owner', 'username _id'); 
+    
     res.status(201).json({ message: 'Item created successfully!', item: savedItem });
 
   } catch (error) {
@@ -36,13 +40,38 @@ exports.getItems = async (req, res) => {
 
     // Find all items that match the user's community
     const items = await Item.find({ communityCode: communityCode })
-      .populate('owner', 'username') // <-- This is cool!
+      .populate('owner', 'username _id') // <-- This is cool!
       .sort({ createdAt: -1 }); // Show newest items first
 
     // .populate() replaces the 'owner' ID with the actual User document,
     // but we only select the 'username' field to show.
 
     res.status(200).json(items);
+
+  } catch (error) {
+    res.status(500).json({ message: 'Something went wrong', error: error.message });
+  }
+};
+// --- (Inside server/controllers/itemController.js) ---
+
+// --- 3. DELETE AN ITEM LOGIC ---
+exports.deleteItem = async (req, res) => {
+  try {
+    const item = await Item.findById(req.params.id);
+
+    if (!item) {
+      return res.status(404).json({ message: 'Item not found' });
+    }
+
+    // Check if the logged-in user is the owner
+    // req.user.id comes from our 'protect' middleware
+    if (item.owner.toString() !== req.user.id) {
+      return res.status(401).json({ message: 'User not authorized' });
+    }
+
+    await item.deleteOne(); // Replaces the old .remove()
+
+    res.status(200).json({ message: 'Item removed successfully' });
 
   } catch (error) {
     res.status(500).json({ message: 'Something went wrong', error: error.message });

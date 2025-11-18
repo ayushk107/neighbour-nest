@@ -1,4 +1,5 @@
 // --- client/src/App.js ---
+import { Toaster } from 'react-hot-toast';
 import React, { useContext } from 'react';
 import { Routes, Route, Link, Navigate } from 'react-router-dom';
 import './App.css';
@@ -46,6 +47,7 @@ function App() {
   }
   return (
     <div className="App">
+      <Toaster position="top-center" />
       <Navbar />
       <Routes>
         {/* If user is logged in, main page (/) is Dashboard. Otherwise, it's Login. */}
