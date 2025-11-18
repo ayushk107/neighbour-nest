@@ -4,7 +4,7 @@ import React, { useContext } from 'react';
 import { Routes, Route, Link, Navigate } from 'react-router-dom';
 import './App.css';
 import { AuthContext } from './context/AuthContext'; // <-- IMPORT CONTEXT
-
+import axios from 'axios';
 
 // Import our pages
 import Register from './pages/Register';
@@ -40,6 +40,8 @@ function Navbar() {
   );
 }
 
+axios.defaults.baseURL = process.env.NODE_ENV === 'development' ? 'http://localhost:5000' : 'https://YOUR-BACKEND-NAME.onrender.com';
+axios.defaults.withCredentials = true;
 function App() {
   const { token, loading } = useContext(AuthContext); // <-- Get token
   if (loading) {
