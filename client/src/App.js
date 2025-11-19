@@ -40,7 +40,7 @@ function Navbar() {
   );
 }
 
-axios.defaults.baseURL = process.env.NODE_ENV === 'development' ? 'http://localhost:5000' : 'https://YOUR-BACKEND-NAME.onrender.com';
+axios.defaults.baseURL = process.env.NODE_ENV === 'development' ? 'http://localhost:5000' : 'https://neighbour-nest-otrm.onrender.com';
 axios.defaults.withCredentials = true;
 function App() {
   const { token, loading } = useContext(AuthContext); // <-- Get token
